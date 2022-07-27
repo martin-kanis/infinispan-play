@@ -9,6 +9,7 @@ import fax.play.model3.Model3F;
 import fax.play.model3.Model3G;
 import fax.play.model3.Model3H;
 import fax.play.model3.Model3I;
+import fax.play.model4.Model4A;
 import fax.play.service.Model;
 import org.infinispan.client.hotrod.RemoteCache;
 
@@ -116,6 +117,19 @@ public class ModelUtils {
             m.id = String.valueOf((7 * ID_VERSION_OFFSET) + i);
             m.nameIndexed = "modelI # " + i;
             m.name = "modelI # " + i;
+
+            return m;
+        };
+    }
+
+    public static Function<Integer, Model> createModel4A(int version) {
+        return i -> {
+            Model4A m = new Model4A();
+            m.entityVersion = version;
+            m.id = String.valueOf((7 * ID_VERSION_OFFSET) + i);
+            m.name = "model4A # " + i;
+            m.nameIndexed = "model4A # " + i;
+            m.lastName = "modelA4 # " + i;
 
             return m;
         };

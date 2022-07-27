@@ -26,6 +26,12 @@ public class CacheProvider {
       return cacheManager;
    }
 
+   public RemoteCacheManager initWithoutDelete(CacheDefinition cacheDefinition, GeneratedSchema ... schemas) {
+      cacheManager = CacheFactory.create(marshaller);
+      cacheManager = CacheFactory.create(cacheDefinition, marshaller, schemas);
+      return cacheManager;
+   }
+
    public RemoteCacheManager getCacheManager() {
       return cacheManager;
    }

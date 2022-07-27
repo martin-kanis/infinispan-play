@@ -42,7 +42,8 @@ public class CacheFactory {
       }
 
       if (cacheDefinition != null) {
-         remoteCacheManager.administration().removeCache(cacheDefinition.getName());
+         // we don't want to delete and re-create the cache, just update cache's indexed entities
+         //remoteCacheManager.administration().removeCache(cacheDefinition.getName());
          remoteCacheManager.administration().createCache(cacheDefinition.getName(),
                new StringConfiguration(cacheDefinition.getConfiguration()));
       }
