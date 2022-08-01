@@ -1,6 +1,8 @@
 package fax.play.smoke;
 
 import fax.play.model3.Schema3A;
+import fax.play.model3.Schema3H;
+import fax.play.model3.Schema3I;
 import fax.play.model4.Schema4A;
 import fax.play.service.CacheDefinition;
 import fax.play.service.CacheProvider;
@@ -42,6 +44,33 @@ public class UpdateIndexedEntitiesTest {
 
         // indexed query - ISPN005003: Exception reported org.hibernate.search.util.common.SearchException: ISPN014505: Unknown entity name: 'Model4'.
         doQuery("FROM Model4 WHERE name LIKE '%4A # 3%'", cache, 1);
+    }
+
+    @Test
+    void testAddIndexedNestedEntity() {
+        RemoteCache<String, Model> cache = cacheProvider
+                .init(new CacheDefinition(CACHE1_NAME, "Model3"), Schema3H.INSTANCE)
+                .getCache(CACHE1_NAME);
+
+        ModelUtils.createModel1Entities(cache, 5, ModelUtils.createModelH(1));
+
+        doQuery("FROM Model3 WHERE nameNonAnalyzed LIKE '%3%'", cache, 1);
+
+        // simulate adding new entity with nested indexed fields at runtime
+        // this will update schema on the server and the local context
+        cacheProvider.updateIndexSchema(cache, Schema3I.INSTANCE);
+
+        // Create second version entities
+        ModelUtils.createModel1Entities(cache, 5, ModelUtils.createModelI(1));
+
+        // non-indexed query - all good
+        doQuery("FROM Model3 WHERE id = 800000", cache, 1);
+
+        // non-analyzed indexed query - all good
+        doQuery("FROM Model3 WHERE name LIKE '%3%'", cache, 1);
+
+        // How can I target nested entity field name?
+        doQuery("FROM Model3 WHERE model.name : 'modelJ*'", cache, 1);
     }
 
     @Test
