@@ -164,7 +164,7 @@ public class MinorsForNoDowntimeUpgradesTest {
                 });
     }
 
-    private <T> void doQuery(String query, RemoteCache<String, T> messageCache, int expectedResults) {
+    public static <T> void doQuery(String query, RemoteCache<String, T> messageCache, int expectedResults) {
         QueryFactory queryFactory = Search.getQueryFactory(messageCache);
         Query<T> infinispanObjectEntities = queryFactory.create(query);
         Set<T> result = StreamSupport.stream(infinispanObjectEntities.spliterator(), false)

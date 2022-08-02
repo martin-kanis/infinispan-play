@@ -9,6 +9,8 @@ import fax.play.model3.Model3F;
 import fax.play.model3.Model3G;
 import fax.play.model3.Model3H;
 import fax.play.model3.Model3I;
+import fax.play.model3.Model3J;
+import fax.play.model3.NestedModel;
 import fax.play.service.Model;
 import org.infinispan.client.hotrod.RemoteCache;
 
@@ -116,6 +118,24 @@ public class ModelUtils {
             m.id = String.valueOf((7 * ID_VERSION_OFFSET) + i);
             m.nameIndexed = "modelI # " + i;
             m.name = "modelI # " + i;
+
+            return m;
+        };
+    }
+
+    public static Function<Integer, Model> createModelJ(int version) {
+        return i -> {
+            Model3J m = new Model3J();
+            m.entityVersion = version;
+            m.id = String.valueOf((8 * ID_VERSION_OFFSET) + i);
+            m.nameIndexed = "modelJ # " + i;
+            m.name = "modelJ # " + i;
+
+            NestedModel nestedModel = new NestedModel();
+            nestedModel.name = "Nested model in Model3J";
+            nestedModel.nameAnalyzed = "Nested model in Model3J";
+
+            m.nestedModel = nestedModel;
 
             return m;
         };
